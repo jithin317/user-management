@@ -12,7 +12,7 @@ import {
   ErrorToast,
   InfoToast,
   SuccessToast,
-  WarnToast,
+  WarningToast,
 } from "../../components/helpers/toast-container";
 import axios from "axios";
 import { AuthContext } from "../../contexts/auth-context";
@@ -71,13 +71,13 @@ export default function SignUp() {
       login();
       if (response.status === 200) {
         return setTimeout(() => {
-          navigate("/profile");
+          navigate("/");
         }, 2000);
       }
       return ErrorToast({ message: "Some Error Occured!" });
     } catch (err) {
       console.log(err?.response?.data?.message || err?.message);
-      WarnToast({ message: err?.response?.data?.message || err?.message });
+      WarningToast({ message: err?.response?.data?.message || err?.message });
     }
   }
 

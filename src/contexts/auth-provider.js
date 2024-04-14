@@ -3,11 +3,12 @@ import { AuthContext } from "./auth-context";
 import { InfoToast } from "../components/helpers/toast-container";
 
 export default function AuthProvider({ children }) {
-  const token = JSON.parse(localStorage.getItem("token")) ?? null;
+  const token = JSON.parse(localStorage.getItem("jwt_token")) ?? null;
   const [isAuthenticated, setIsAuthenticated] = useState(token ?? null);
   const [update, setUpdate] = useState(false);
 
   const login = () => {
+    const token = JSON.parse(localStorage.getItem("jwt_token")) ?? null;
     setIsAuthenticated(token ?? null);
   };
   const logout = () => {

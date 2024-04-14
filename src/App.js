@@ -1,13 +1,10 @@
-import Router from "./routes";
-import "./index.css";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { Fragment } from "react";
+import Router from "./routes";
 
 function App() {
   return (
     <Fragment>
-      <ToastContainer stacked />
       <Router />
     </Fragment>
   );

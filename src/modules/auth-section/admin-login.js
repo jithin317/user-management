@@ -14,11 +14,9 @@ import {
   SuccessToast,
   WarningToast,
 } from "../../components/helpers/toast-container";
-import { AuthContext } from "../../contexts/auth-context";
 
-export default function Login() {
+export default function AdminLogin() {
   const navigate = useNavigate();
-  const { isAuthenticated, login, logout } = useContext(AuthContext);
   const initialValues = {
     username: "",
     password: "",
@@ -34,7 +32,7 @@ export default function Login() {
       const { username, password } = values;
       InfoToast({ message: "Please Wait!" });
       const response = await axios.post(
-        "http://localhost:5000/users/login",
+        "http://localhost:5000/admin/login",
         {
           username: username.toLowerCase(),
           password,
@@ -50,15 +48,16 @@ export default function Login() {
         }
       );
       console.log(response?.data?.msg);
-      localStorage.setItem("jwt_token", JSON.stringify(response?.data?.token));
+      localStorage.setItem(
+        "admin_token",
+        JSON.stringify(response?.data?.token)
+      );
       SuccessToast({ message: response?.data?.msg });
-      login();
       if (response.status === 200) {
         return setTimeout(() => {
-          navigate("/");
+          navigate("/admin");
         }, 2000);
       }
-      return ErrorToast({ message: "Some Error Occured!" });
     } catch (err) {
       console.log(err?.response?.data?.message || err?.message);
       WarningToast({ message: err?.response?.data?.message || err?.message });
@@ -70,13 +69,10 @@ export default function Login() {
       {...pageTransitions}
       className="w-full bg-white  flex min-h-screen"
     >
-      <motion.div
-        {...motionStyles}
-        className="relative flex-1 hidden h-screen items-center justify-center lg:flex"
-      >
+      <motion.div className="relative flex-1 hidden h-screen items-center justify-center lg:flex">
         <img
           alt="LoginImg"
-          src="https://i.ibb.co/hB6zQJM/24070702-bwink-bld-03-single-03-min.jpg"
+          src={require("../../assets/images/adminIMG.jpg")}
           className="w-full h-full pointer-events-none"
         />
       </motion.div>
@@ -114,33 +110,6 @@ export default function Login() {
                       disabled={isSubmitting}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        type="checkbox"
-                        id="remember-me-checkbox"
-                        className="checkbox-item peer hidden"
-                      />
-                      <label
-                        htmlFor="remember-me-checkbox"
-                        className="relative flex w-5 h-5 bg-white peer-checked:bg-gray-900 rounded-md border ring-offset-2 ring-gray-900 duration-150 peer-active:ring cursor-pointer after:absolute after:inset-x-0 after:top-[3px] after:m-auto after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:rotate-45"
-                      ></label>
-                      <label
-                        htmlFor="remember-me-checkbox"
-                        className="cursor-pointer select-none"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-                    <div>
-                      <Link
-                        to={"/forgot-password"}
-                        className="text-indigo-600 font-medium hover:text-indigo-700"
-                      >
-                        Forgot Password ?
-                      </Link>
-                    </div>
-                  </div>
                   <AuthButton
                     type={"submit"}
                     disabled={isSubmitting}
@@ -150,21 +119,6 @@ export default function Login() {
               );
             }}
           </Formik>
-          {/* <div>
-            <GoogleButton
-              onClkFn={() => HandleGoogleCreds(navigate)}
-              text="Continue with Google"
-            />
-          </div> */}
-          <p className="text-center">
-            Don't have an account?{" "}
-            <Link
-              to={"/sign-up"}
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Sign up
-            </Link>
-          </p>
         </div>
       </div>
     </motion.main>
